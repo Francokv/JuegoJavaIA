@@ -5,6 +5,8 @@
  */
 package juegojavaia;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author elnik
@@ -15,7 +17,9 @@ public class JuegoJavaIA {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        VentanaPrincipal vp=new VentanaPrincipal();
+        vp.setVisible(true);
+        vp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
     }
     
 }
