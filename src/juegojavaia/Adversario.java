@@ -6,8 +6,10 @@
 package juegojavaia;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Arrays;
-import javax.swing.JOptionPane;
+import static juegojavaia.Constantes.FPS;
+import static juegojavaia.Constantes.FRAME_TIME;
 import utilidades.CargaImagenes;
 import utilidades.Input;
 
@@ -15,26 +17,24 @@ import utilidades.Input;
  *
  * @author elnik
  */
-public class Jugador extends GameObject {
+public class Adversario extends GameObject {
+
+    int damage = 1;
 
     boolean enMovimiento;
     int fpsCount;
-    float velocidad = 7f; // se mide en celdas por segundo
+    float velocidad = 4f; // se mide en celdas por segundo
     int velAnimacion = 12;
     int animCount;
 
     float t_invulnerable = 0.7f;
     float t_totalInv = 0;
 
-    boolean invulnerable = false;
-
     BufferedImage[] animacionActual;
 
     @Override
     protected void init() {
-        nombre = "Jugador 1";
-        tag = "jugador";
-        sprites = CargaImagenes.jugador;
+        sprites = CargaImagenes.adversario;
         transparente = true;
         spriteActual = sprites[1];
         setAnimacion(Arrays.copyOfRange(sprites, 0, 3));
@@ -48,50 +48,48 @@ public class Jugador extends GameObject {
         } else {
             mover();
         }
-        if(!enMovimiento){
+        if (!enMovimiento) {
             spriteActual = animacionActual[1];
         }
-        
-        
-        if (t_totalInv > t_invulnerable) {
-            t_totalInv = 0;
-            invulnerable = false;
-        }
-        if (invulnerable) {
-            t_totalInv += FRAME_TIME;
-        }
+
     }
 
     private void mover() {
         Celda destino;
-        if (Input.horizontal != 0) {
-            destino = escenario.getCelda(celda.cooredenadas.x + Input.horizontal, celda.cooredenadas.y);
-            if (destino != null && destino.estaLibre()) {
+
+        if (Math.random() < 0.5) {
+            if ((destino = escenario.getCelda(celda.cooredenadas.x + 1, celda.cooredenadas.y)) != null && destino.estaLibre() && Math.random() < 0.5) {
                 moverA(destino.cooredenadas);
-                posicion.x = -Input.horizontal;
+                posicion.x = -1f;
                 enMovimiento = true;
                 //settear animacion
-                if(posicion.x < 0){
-                    setAnimacion(Arrays.copyOfRange(sprites, 6, 9));
-                }else{
-                    setAnimacion(Arrays.copyOfRange(sprites, 3,6));
-                }
-            }
 
-        } else if (Input.vertical != 0) {
-            destino = escenario.getCelda(celda.cooredenadas.x, celda.cooredenadas.y - Input.vertical);
-            if (destino != null && destino.estaLibre()) {
+                setAnimacion(Arrays.copyOfRange(sprites, 6, 9));
+
+            } else if ((destino = escenario.getCelda(celda.cooredenadas.x - 1, celda.cooredenadas.y)) != null && destino.estaLibre()) {
                 moverA(destino.cooredenadas);
-                posicion.y = -Input.vertical;
+                posicion.x = +1f;
                 enMovimiento = true;
-                
-                if(posicion.y < 0){
-                    setAnimacion(Arrays.copyOfRange(sprites, 9, 12));
-                }else{
-                    setAnimacion(Arrays.copyOfRange(sprites, 0, 3));
-                }
+                //settear animacion
+                setAnimacion(Arrays.copyOfRange(sprites, 3, 6));
+
+            }
+        } else {
+            if ((destino = escenario.getCelda(celda.cooredenadas.x, celda.cooredenadas.y + 1)) != null && destino.estaLibre() && Math.random() < 0.5) {
+                moverA(destino.cooredenadas);
+                posicion.y = +1f;
+                enMovimiento = true;
+                //settear animacion
+                setAnimacion(Arrays.copyOfRange(sprites, 0, 3));
+            } else if ((destino = escenario.getCelda(celda.cooredenadas.x, celda.cooredenadas.y - 1)) != null && destino.estaLibre()) {
+                moverA(destino.cooredenadas);
+                posicion.y = -1f;
+                enMovimiento = true;
+                //settear animacion
+                setAnimacion(Arrays.copyOfRange(sprites, 9, 12));
             }
         }
+
     }
 
     private void animacion() {
@@ -101,7 +99,7 @@ public class Jugador extends GameObject {
             animCount++;
             fpsCount = 0;
         }
-        
+
         if (posicion.x < 0) {
             posicion.x += velocidad * FRAME_TIME;
             if (posicion.x > 0) {
@@ -132,22 +130,20 @@ public class Jugador extends GameObject {
         fpsCount++;
     }
 
-    private void setAnimacion(BufferedImage[] anim){
+    private void setAnimacion(BufferedImage[] anim) {
         animacionActual = new BufferedImage[anim.length + 1];
-        for(int i = 0;i < anim.length; i++){
+        for (int i = 0; i < anim.length; i++) {
             animacionActual[i] = anim[i];
         }
-        animacionActual[animacionActual.length - 1] = animacionActual[1]; 
+        animacionActual[animacionActual.length - 1] = animacionActual[1];
     }
-    
-    public void damage(int val) {
-        if(!invulnerable){
-            Lienzo.vidas-= val;
-            if(Lienzo.vidas == 0){
-                JOptionPane.showMessageDialog(null, "Haz perdido, lograste obtener "+ Lienzo.recompensas+" de "+ Lienzo.recompensasTotales+" recompensas");
-                System.exit(0);
+
+    @Override
+    protected void onCollision(ArrayList<GameObject> coll) {
+        for (GameObject go : coll) {
+            if (go.tag.equals("jugador")) {
+                ((Jugador) go).damage(damage);
             }
         }
-        invulnerable = true; 
     }
 }

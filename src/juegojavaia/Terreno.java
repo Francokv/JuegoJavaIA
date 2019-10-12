@@ -33,7 +33,12 @@ public class Terreno extends GameObject{
     protected void init(){
         if(tipo == Tipo.PISO){
             texturas = CargaImagenes.piso;
-            spriteActual = texturas[4];
+            int num = (int) (Math.random() * 50);
+            if(num < 6){
+                spriteActual = texturas[num];
+            }else{
+                spriteActual = texturas[6];
+            }
             transparente = true;
         }else{
             texturas = CargaImagenes.pared;

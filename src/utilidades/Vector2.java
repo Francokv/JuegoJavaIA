@@ -8,7 +8,12 @@ package utilidades;
 /**
  *
  * @author elnik
+ * 
  */
+
+/*
+*   Vector2 es una clase que encapsula 2 valores flotantes, x e y los cuales se utilizan para representar una posición en un espacio de 2 dimensiones
+*/
 public class Vector2 {
     public float x;
     public float y;

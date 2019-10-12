@@ -48,7 +48,6 @@ public class Celda extends JComponent implements Constantes {
         if (!objetos.contains(go)) {
             objetos.add(go);
             go.celda = this;
-            Collections.sort(objetos, new OrdenarPorPrioridad());
         }
     }
 

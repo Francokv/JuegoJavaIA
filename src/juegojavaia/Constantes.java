@@ -17,6 +17,6 @@ public interface Constantes {
     final int CANTIDAD_CELDAS_X = 20;
     final int CANTIDAD_CELDAS_Y = 20;
     final int BORDE = 20;
-    
+    final float FRAME_TIME = (float)1/FPS;
     
 }

@@ -31,31 +31,66 @@ public class Escenario extends JComponent implements Constantes {
         for (int i = 0; i < CANTIDAD_CELDAS_X; i++) {
             for (int j = 0; j < CANTIDAD_CELDAS_Y; j++) {
                 celdas[i][j] = new Celda();
-                celdas[i][j].posicion = new Vector2Int(i * PIXEL_CELDA,j * PIXEL_CELDA);
-                celdas[i][j].cooredenadas = new Vector2Int(i,j);
+                celdas[i][j].posicion = new Vector2Int(i * PIXEL_CELDA, j * PIXEL_CELDA);
+                celdas[i][j].cooredenadas = new Vector2Int(i, j);
             }
         }
     }
 
     public void generarEscenaAleatoria() {
-        int c_jugador = 1;
-        int c_recompensa = 3;
-        int c_enemigo = 3;
-        int c_final = 1;
-        
+        int jx = 0, jy = 4;//posicion inicial del jugador
+        int c_recompensa = 4;//cantidad de recompnsas
+        int c_adversarios = 3;//cantidad de enemigos
+        int finalx = 6, finaly = 7;// 
+
+        //crear jugador
         Jugador jugador = new Jugador();
         jugador.escenario = this;
-        celdas[2][3].agregarObjeto(jugador);
-        
-        celdas[4][3].agregarObjeto(new Moneda (Moneda.Tipo.COBRE));
-        celdas[5][7].agregarObjeto(new Moneda (Moneda.Tipo.ORO));
-        celdas[2][14].agregarObjeto(new Moneda (Moneda.Tipo.PLATA));
-        
+        celdas[jx][jy].agregarObjeto(jugador);
+        celdas[finalx][finalx].agregarObjeto(new Final());
+
+        //generar terreno
         for (int i = 0; i < CANTIDAD_CELDAS_X; i++) {
             for (int j = 0; j < CANTIDAD_CELDAS_Y; j++) {
                 celdas[i][j].agregarObjeto(new Terreno(null));
             }
         }
+
+        //generar obstaculos
+        for (int i = 0; i < CANTIDAD_CELDAS_X; i++) {
+            for (int j = 0; j < CANTIDAD_CELDAS_Y; j++) {
+                if (Math.random() < 0.2 && i != jx && j != jy && i != finalx && j != finaly) {
+                    celdas[i][j].agregarObjeto(new Obstaculo());
+                }
+            }
+        }
+
+        //generar Adversarios
+        while (c_adversarios != 0) {
+            for (int i = 0; i < CANTIDAD_CELDAS_X; i++) {
+                for (int j = 0; j < CANTIDAD_CELDAS_Y; j++) {
+                    if (celdas[i][j].estaLibre() && Math.random() < 0.05 && c_adversarios != 0 && i != jx && j != jy) {
+                        Adversario nuevo = new Adversario();
+                        nuevo.escenario = this;
+                        celdas[i][j].agregarObjeto(nuevo);
+                        c_adversarios--;
+                    }
+                }
+            }
+        }
+        
+        //generar recompensas
+        while (c_recompensa != 0) {
+            for (int i = 0; i < CANTIDAD_CELDAS_X; i++) {
+                for (int j = 0; j < CANTIDAD_CELDAS_Y; j++) {
+                    if (celdas[i][j].estaLibre() && Math.random() < 0.05 && c_recompensa != 0 && i != jx && j != jy) {
+                        celdas[i][j].agregarObjeto(new Recompensa());
+                        c_recompensa--;
+                    }
+                }
+            }
+        }
+
     }
 
     @Override
@@ -73,16 +108,16 @@ public class Escenario extends JComponent implements Constantes {
                 objetos.addAll(celdas[i][j].objetos);
             }
         }
-        
+
         Collections.sort(objetos, new OrdenarPorPrioridad());
-        
-        for(GameObject go : objetos){
+
+        for (GameObject go : objetos) {
             go.dibujar(g);
         }
     }
-    
-    public Celda getCelda (int x , int y){
-        if(x >= 0 && y >= 0 && x < CANTIDAD_CELDAS_X && y <CANTIDAD_CELDAS_Y){
+
+    public Celda getCelda(int x, int y) {
+        if (x >= 0 && y >= 0 && x < CANTIDAD_CELDAS_X && y < CANTIDAD_CELDAS_Y) {
             return celdas[x][y];
         }
         return null;

@@ -26,6 +26,7 @@ public class GameObject implements Constantes{
     public int prioridad;
     public boolean transparente;
     public Vector2 posicion = new Vector2();
+    public Vector2 escala = new Vector2(1,1);
     public boolean redibujar = true;
  
     
@@ -64,7 +65,7 @@ public class GameObject implements Constantes{
                     celda.removerObjeto(this);
                     celda = escenario.celdas[p.x][p.y];
                     celda.agregarObjeto(this);
-                    System.out.println("x : "+p.x + "  y : "+p.y);
+                    System.out.println(nombre+" -> x : "+p.x + "  y : "+p.y);
         }
     }
     
