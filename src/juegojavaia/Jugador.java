@@ -5,11 +5,16 @@
  */
 package juegojavaia;
 
+import IA.BusquedaAnchura;
+import IA.Estado;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
 import utilidades.CargaImagenes;
 import utilidades.Input;
+import utilidades.Vector2Int;
 
 /**
  *
@@ -28,7 +33,9 @@ public class Jugador extends GameObject {
 
     boolean invulnerable = false;
 
-    BufferedImage[] animacionActual;
+    Image[] animacionActual;
+
+    public ArrayList<Estado> pasos = new ArrayList<Estado>();
 
     @Override
     protected void init() {
@@ -39,6 +46,7 @@ public class Jugador extends GameObject {
         spriteActual = sprites[1];
         setAnimacion(Arrays.copyOfRange(sprites, 0, 3));
         prioridad = 5;
+        pasos = new ArrayList<Estado>();
     }
 
     @Override
@@ -46,19 +54,80 @@ public class Jugador extends GameObject {
         if (enMovimiento) {
             animacion();
         } else {
-            mover();
+            moverIA();
         }
-        if(!enMovimiento){
+        if (!enMovimiento) {
             spriteActual = animacionActual[1];
         }
-        
-        
+
         if (t_totalInv > t_invulnerable) {
             t_totalInv = 0;
             invulnerable = false;
         }
         if (invulnerable) {
             t_totalInv += FRAME_TIME;
+        }
+    }
+
+    private void moverIA() {
+        Vector2Int p = new Vector2Int();
+        Celda destino;
+
+        if (pasos == null || pasos.isEmpty()) {
+            if(Recompensa.recompensas.isEmpty()){
+                pasos = BusquedaAnchura.getRuta(celda.cooredenadas, Final.fin.celda.cooredenadas);
+            }else{
+                Recompensa objetivo = Recompensa.recompensas.get(0);
+                double distancia = celda.cooredenadas.distancia(objetivo.celda.cooredenadas);
+
+                for(Recompensa r : Recompensa.recompensas){
+                    if(celda.cooredenadas.distancia(r.celda.cooredenadas) < distancia){
+                        objetivo = r;
+                        distancia = celda.cooredenadas.distancia(r.celda.cooredenadas);
+                    }
+                }
+                Recompensa.recompensas.remove(objetivo);
+                pasos = BusquedaAnchura.getRuta(celda.cooredenadas, objetivo.celda.cooredenadas);
+            }
+            
+        }
+
+        p = pasos.get(pasos.size() - 1).posicion;
+        pasos.remove(pasos.size() - 1);
+
+        int horizontal = p.x -celda.cooredenadas.x ;
+        int vertical = celda.cooredenadas.y - p.y;
+
+        if (horizontal != 0) {
+            destino = escenario.getCelda(celda.cooredenadas.x + horizontal, celda.cooredenadas.y);
+            if (destino != null && destino.estaLibre()) {
+                moverA(destino.cooredenadas);
+                posicion.x = -horizontal;
+                enMovimiento = true;
+                //settear animacion
+                if (posicion.x < 0) {
+                    setAnimacion(Arrays.copyOfRange(sprites, 6, 9));
+                } else {
+                    setAnimacion(Arrays.copyOfRange(sprites, 3, 6));
+                }
+
+                //Lienzo.vidas--;
+            }
+
+        } else if (vertical != 0) {
+            destino = escenario.getCelda(celda.cooredenadas.x, celda.cooredenadas.y - vertical);
+            if (destino != null && destino.estaLibre()) {
+                moverA(destino.cooredenadas);
+                posicion.y = -vertical;
+                enMovimiento = true;
+
+                if (posicion.y < 0) {
+                    setAnimacion(Arrays.copyOfRange(sprites, 9, 12));
+                } else {
+                    setAnimacion(Arrays.copyOfRange(sprites, 0, 3));
+                }
+                //Lienzo.vidas--;
+            }
         }
     }
 
@@ -71,11 +140,13 @@ public class Jugador extends GameObject {
                 posicion.x = -Input.horizontal;
                 enMovimiento = true;
                 //settear animacion
-                if(posicion.x < 0){
+                if (posicion.x < 0) {
                     setAnimacion(Arrays.copyOfRange(sprites, 6, 9));
-                }else{
-                    setAnimacion(Arrays.copyOfRange(sprites, 3,6));
+                } else {
+                    setAnimacion(Arrays.copyOfRange(sprites, 3, 6));
                 }
+
+                //Lienzo.vidas--;
             }
 
         } else if (Input.vertical != 0) {
@@ -84,14 +155,21 @@ public class Jugador extends GameObject {
                 moverA(destino.cooredenadas);
                 posicion.y = -Input.vertical;
                 enMovimiento = true;
-                
-                if(posicion.y < 0){
+
+                if (posicion.y < 0) {
                     setAnimacion(Arrays.copyOfRange(sprites, 9, 12));
-                }else{
+                } else {
                     setAnimacion(Arrays.copyOfRange(sprites, 0, 3));
                 }
+                //Lienzo.vidas--;
             }
         }
+
+        /*
+         if(Lienzo.vidas == 0){
+         JOptionPane.showMessageDialog(null, "Haz perdido, lograste obtener "+ Lienzo.recompensas+" de "+ Lienzo.recompensasTotales+" recompensas");
+         }
+         */
     }
 
     private void animacion() {
@@ -101,7 +179,7 @@ public class Jugador extends GameObject {
             animCount++;
             fpsCount = 0;
         }
-        
+
         if (posicion.x < 0) {
             posicion.x += velocidad * FRAME_TIME;
             if (posicion.x > 0) {
@@ -132,22 +210,22 @@ public class Jugador extends GameObject {
         fpsCount++;
     }
 
-    private void setAnimacion(BufferedImage[] anim){
-        animacionActual = new BufferedImage[anim.length + 1];
-        for(int i = 0;i < anim.length; i++){
+    private void setAnimacion(Image[] anim) {
+        animacionActual = new Image[anim.length + 1];
+        for (int i = 0; i < anim.length; i++) {
             animacionActual[i] = anim[i];
         }
-        animacionActual[animacionActual.length - 1] = animacionActual[1]; 
+        animacionActual[animacionActual.length - 1] = animacionActual[1];
     }
-    
+
     public void damage(int val) {
-        if(!invulnerable){
-            Lienzo.vidas-= val;
-            if(Lienzo.vidas == 0){
-                JOptionPane.showMessageDialog(null, "Haz perdido, lograste obtener "+ Lienzo.recompensas+" de "+ Lienzo.recompensasTotales+" recompensas");
+        if (!invulnerable) {
+            Lienzo.vidas -= val;
+            if (Lienzo.vidas == 0) {
+                JOptionPane.showMessageDialog(null, "Haz perdido, lograste obtener " + Lienzo.recompensas + " de " + Lienzo.recompensasTotales + " recompensas");
                 System.exit(0);
             }
         }
-        invulnerable = true; 
+        invulnerable = true;
     }
 }

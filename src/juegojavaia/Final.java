@@ -5,6 +5,7 @@
  */
 package juegojavaia;
 
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
@@ -15,10 +16,14 @@ import utilidades.CargaImagenes;
  * @author elnik
  */
 public class Final extends GameObject {
+    
+    
+    public static Final fin; 
     @Override
+    
     protected void init() {
-
-        spriteActual = CargaImagenes.portal;
+        fin = this;
+        spriteActual = CargaImagenes.portal.getScaledInstance(PIXEL_CELDA, PIXEL_CELDA, Image.SCALE_DEFAULT);
         transparente = true;
         prioridad = 2;
     }

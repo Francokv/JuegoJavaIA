@@ -5,6 +5,7 @@
  */
 package juegojavaia;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,7 +31,7 @@ public class Adversario extends GameObject {
     float t_invulnerable = 0.7f;
     float t_totalInv = 0;
 
-    BufferedImage[] animacionActual;
+    Image[] animacionActual;
 
     @Override
     protected void init() {
@@ -130,8 +131,8 @@ public class Adversario extends GameObject {
         fpsCount++;
     }
 
-    private void setAnimacion(BufferedImage[] anim) {
-        animacionActual = new BufferedImage[anim.length + 1];
+    private void setAnimacion(Image[] anim) {
+        animacionActual = new Image[anim.length + 1];
         for (int i = 0; i < anim.length; i++) {
             animacionActual[i] = anim[i];
         }

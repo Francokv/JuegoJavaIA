@@ -5,6 +5,7 @@
  */
 package juegojavaia;
 
+import java.awt.Image;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import utilidades.CargaImagenes;
@@ -19,7 +20,9 @@ public class Recompensa extends GameObject {
     int velAnimacion = 10;
     int fpsCount;
     int spriteIndex;
-
+    
+    public static ArrayList<Recompensa> recompensas = new ArrayList<>();
+    
     @Override
     protected void init() {
         prioridad = 4;
@@ -29,6 +32,7 @@ public class Recompensa extends GameObject {
         sprites = CargaImagenes.monedaOro;
 
         spriteActual = sprites[0];
+        recompensas.add(this);
     }
 
     @Override
@@ -38,7 +42,7 @@ public class Recompensa extends GameObject {
             if (spriteIndex == sprites.length) {
                 spriteIndex = 0;
             }
-            spriteActual = sprites[spriteIndex];
+            spriteActual = sprites[spriteIndex].getScaledInstance(PIXEL_CELDA, PIXEL_CELDA, Image.SCALE_DEFAULT);
             spriteIndex++;
             fpsCount = 0;
         }
@@ -50,6 +54,7 @@ public class Recompensa extends GameObject {
             if (go.tag.equals("jugador")) {
                 celda.removerObjeto(this);
                 Lienzo.recompensas++;
+                recompensas.remove(this);
                 if(Lienzo.recompensas == Lienzo.recompensasTotales){
                     JOptionPane.showMessageDialog(null,"Ya tienes todas las recompensas!! ahora dirigete al portal para escapar.");
                 }

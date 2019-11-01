@@ -5,19 +5,30 @@
  */
 package juegojavaia;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import utilidades.CargaImagenes;
 
 /**
  *
  * @author elnik
  */
-public class Obstaculo extends GameObject{
+public class Obstaculo extends GameObject {
 
     @Override
-    protected void init (){
+    protected void init() {
         prioridad = 6;
         transparente = false;
-        spriteActual = CargaImagenes.obstaculos[(int)(Math.random() * CargaImagenes.obstaculos.length)];
-        posicion.y = spriteActual.getHeight() / PIXEL_CELDA - 1;
+
+        Image aux = CargaImagenes.obstaculos[(int) (Math.random() * CargaImagenes.obstaculos.length)];
+        if (aux.getHeight(null) / aux.getWidth(null) == 1) {
+            spriteActual = aux;
+            
+        } else {
+            spriteActual = aux;
+            posicion.y = 1;
+            escala.y = 1;
+        }
+        
     }
 }

@@ -6,6 +6,7 @@
 package juegojavaia;
 
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -19,14 +20,14 @@ import utilidades.Vector2Int;
 public class GameObject implements Constantes{
     public String tag = new String ();
     public String nombre;
-    public BufferedImage spriteActual;
-    public BufferedImage[] sprites;
+    public Image spriteActual;
+    public Image[] sprites;
     public Celda celda;
     public Escenario escenario;
     public int prioridad;
     public boolean transparente;
     public Vector2 posicion = new Vector2();
-    public Vector2 escala = new Vector2(1,1);
+    public Vector2Int escala = new Vector2Int(1,1);
     public boolean redibujar = true;
  
     

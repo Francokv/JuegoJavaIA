@@ -5,6 +5,7 @@
  */
 package juegojavaia;
 
+import IA.BusquedaAnchura;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.ArrayList;
@@ -38,21 +39,23 @@ public class Escenario extends JComponent implements Constantes {
     }
 
     public void generarEscenaAleatoria() {
-        int jx = 0, jy = 4;//posicion inicial del jugador
+        int jx = 5, jy = 4;//posicion inicial del jugador
         int c_recompensa = 4;//cantidad de recompnsas
         int c_adversarios = 3;//cantidad de enemigos
-        int finalx = 6, finaly = 7;// 
+        int finalx = 0, finaly = 0;// 
 
         //crear jugador
         Jugador jugador = new Jugador();
         jugador.escenario = this;
+
+        
         celdas[jx][jy].agregarObjeto(jugador);
         celdas[finalx][finalx].agregarObjeto(new Final());
 
         //generar terreno
         for (int i = 0; i < CANTIDAD_CELDAS_X; i++) {
             for (int j = 0; j < CANTIDAD_CELDAS_Y; j++) {
-                celdas[i][j].agregarObjeto(new Terreno(null));
+                celdas[i][j].agregarObjeto(new Terreno());
             }
         }
 
@@ -69,7 +72,7 @@ public class Escenario extends JComponent implements Constantes {
         while (c_adversarios != 0) {
             for (int i = 0; i < CANTIDAD_CELDAS_X; i++) {
                 for (int j = 0; j < CANTIDAD_CELDAS_Y; j++) {
-                    if (celdas[i][j].estaLibre() && Math.random() < 0.05 && c_adversarios != 0 && i != jx && j != jy) {
+                    if (celdas[i][j].estaLibre() && Math.random() < 0.001 && c_adversarios != 0 && i != jx && j != jy) {
                         Adversario nuevo = new Adversario();
                         nuevo.escenario = this;
                         celdas[i][j].agregarObjeto(nuevo);
@@ -83,14 +86,14 @@ public class Escenario extends JComponent implements Constantes {
         while (c_recompensa != 0) {
             for (int i = 0; i < CANTIDAD_CELDAS_X; i++) {
                 for (int j = 0; j < CANTIDAD_CELDAS_Y; j++) {
-                    if (celdas[i][j].estaLibre() && Math.random() < 0.05 && c_recompensa != 0 && i != jx && j != jy) {
+                    if (celdas[i][j].estaLibre() && Math.random() < 0.001 && c_recompensa != 0 && i != jx && j != jy) {
                         celdas[i][j].agregarObjeto(new Recompensa());
                         c_recompensa--;
                     }
                 }
             }
         }
-
+        BusquedaAnchura.escenario = this;
     }
 
     @Override

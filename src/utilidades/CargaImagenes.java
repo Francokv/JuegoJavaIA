@@ -5,27 +5,29 @@
  */
 package utilidades;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import juegojavaia.Constantes;
 
 /**
  *
  * @author elnik
  */
-public class CargaImagenes {
+public class CargaImagenes implements Constantes{
 
-    public static BufferedImage[] piso = new BufferedImage[7];
-    public static BufferedImage[] pared= new BufferedImage[9];
-    public static BufferedImage[] jugador= new BufferedImage[12];
-    public static BufferedImage[] adversario= new BufferedImage[12];
-    public static BufferedImage portal;
-    public static BufferedImage[] monedaOro = new BufferedImage[8];
-    public static BufferedImage[] monedaPlata = new BufferedImage[8];
-    public static BufferedImage[] monedaCobre = new BufferedImage[8];
-    public static BufferedImage[] corazones = new BufferedImage[3];
-    public static BufferedImage[] obstaculos = new BufferedImage[2];
+    public static Image[] piso = new Image[7];
+    public static Image[] pared= new Image[9];
+    public static Image[] jugador= new Image[12];
+    public static Image[] adversario= new Image[12];
+    public static Image portal;
+    public static Image[] monedaOro = new Image[8];
+    public static Image[] monedaPlata = new Image[8];
+    public static Image[] monedaCobre = new Image[8];
+    public static Image[] corazones = new Image[3];
+    public static Image[] obstaculos = new Image[2];
 
     
 
@@ -41,40 +43,45 @@ public class CargaImagenes {
             obstaculosIm = ImageIO.read(new File("src/sprites/vegetacion.png"));
             adversarioIm = ImageIO.read(new File("src/sprites/adversario.png"));
             portalIm = ImageIO.read(new File("src/sprites/portal.png"));
+            
             int pixeles = 32;
             
-            portal = portalIm.getSubimage(0* pixeles,2* pixeles, pixeles, pixeles);
+            
+  
+            
+            portal = portalIm.getSubimage(0* pixeles,2* pixeles, pixeles, pixeles).getScaledInstance(PIXEL_CELDA, PIXEL_CELDA, Image.SCALE_DEFAULT);
             //carga texturas del terreno
             for (int i = 0; i < piso.length; i++) {
-                piso[i] = terrenoIm.getSubimage(i* pixeles,0, pixeles, pixeles);
+                piso[i] = terrenoIm.getSubimage(i* pixeles,0, pixeles, pixeles).getScaledInstance(PIXEL_CELDA, PIXEL_CELDA, Image.SCALE_DEFAULT);
             }
+            
             //carga sprites del jugador
             for (int i = 0; i < jugador.length; i++) {
-                jugador[i] = jugadorIm.getSubimage(i % 3 * pixeles, (i/3) * pixeles, pixeles, pixeles);
+                jugador[i] = jugadorIm.getSubimage(i % 3 * pixeles, (i/3) * pixeles, pixeles, pixeles).getScaledInstance(PIXEL_CELDA, PIXEL_CELDA, Image.SCALE_DEFAULT);
             }
             //carga sprites del adversarios
             for (int i = 0; i < jugador.length; i++) {
-                adversario[i] = adversarioIm.getSubimage(i % 3 * pixeles, (i/3) * pixeles, pixeles, pixeles);
+                adversario[i] = adversarioIm.getSubimage(i % 3 * pixeles, (i/3) * pixeles, pixeles, pixeles).getScaledInstance(PIXEL_CELDA, PIXEL_CELDA, Image.SCALE_DEFAULT);
             }
             //carga sprites de las monedas 
             for (int i = 0; i < monedaOro.length; i++) {
-                monedaOro[i] = monedaOroIm.getSubimage(i * pixeles,0, pixeles, pixeles);
+                monedaOro[i] = monedaOroIm.getSubimage(i * pixeles,0, pixeles, pixeles).getScaledInstance(PIXEL_CELDA, PIXEL_CELDA, Image.SCALE_DEFAULT);
             }
             for (int i = 0; i < monedaPlata.length; i++) {
-                monedaPlata[i] = monedaPlataIm.getSubimage(i * pixeles,0, pixeles, pixeles);
+                monedaPlata[i] = monedaPlataIm.getSubimage(i * pixeles,0, pixeles, pixeles).getScaledInstance(PIXEL_CELDA, PIXEL_CELDA, Image.SCALE_DEFAULT);
             }
             for (int i = 0; i < monedaCobre.length; i++) {
-                monedaCobre[i] = monedaCobreIm.getSubimage(i * pixeles,0, pixeles, pixeles);
+                monedaCobre[i] = monedaCobreIm.getSubimage(i * pixeles,0, pixeles, pixeles).getScaledInstance(PIXEL_CELDA, PIXEL_CELDA, Image.SCALE_DEFAULT);
             }
             //carga imagenes de corazones
             for (int i = 0; i < 2; i++) {
-                corazones[i] = corazonesIm.getSubimage(i * pixeles,0, pixeles, pixeles);
+                corazones[i] = corazonesIm.getSubimage(i * pixeles,0, pixeles, pixeles).getScaledInstance(PIXEL_CELDA, PIXEL_CELDA, Image.SCALE_DEFAULT);
             }
-            corazones[2] = corazonesIm.getSubimage(2 * pixeles,3 * pixeles, pixeles, pixeles);
+            corazones[2] = corazonesIm.getSubimage(2 * pixeles,3 * pixeles, pixeles, pixeles).getScaledInstance(PIXEL_CELDA, PIXEL_CELDA, Image.SCALE_DEFAULT);
              //carga imagenes de vegetacion
             
-            obstaculos[0] = obstaculosIm.getSubimage(0,0, pixeles, pixeles);
-            obstaculos[1] = obstaculosIm.getSubimage(0,pixeles, pixeles, 2*pixeles);
+            obstaculos[0] = obstaculosIm.getSubimage(0,0, pixeles, pixeles).getScaledInstance(PIXEL_CELDA, PIXEL_CELDA, Image.SCALE_DEFAULT);
+            obstaculos[1] = obstaculosIm.getSubimage(0,pixeles, pixeles, 2*pixeles).getScaledInstance(PIXEL_CELDA, PIXEL_CELDA*2, Image.SCALE_DEFAULT);
             
         } catch (IOException error) {
             System.out.println("Error : " + error.toString());

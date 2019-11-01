@@ -5,6 +5,7 @@
  */
 package juegojavaia;
 
+import IA.BusquedaAnchura;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -38,6 +39,7 @@ public class Lienzo extends Canvas implements Constantes {
     private Lienzo() {
         escenario = new Escenario();
         escenario.generarEscenaAleatoria();
+        BusquedaAnchura.escenario = escenario;
         addKeyListener(new Input());
 
     }

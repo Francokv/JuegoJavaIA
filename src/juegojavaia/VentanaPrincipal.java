@@ -26,7 +26,7 @@ public class VentanaPrincipal extends JFrame implements Constantes {
         lienzo = Lienzo.getLienzo();
         
         add(lienzo);
-        setSize(1430, 690);
+        setSize(ANCHO_PANTALLA, LARGO_PANTALLA);
         setVisible(true);
         setDefaultCloseOperation(3);
         lienzo.setFocusable(true);

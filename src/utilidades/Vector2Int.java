@@ -5,6 +5,8 @@
  */
 package utilidades;
 
+import IA.Estado;
+
 /**
  *
  * @author elnik
@@ -22,5 +24,28 @@ public class Vector2Int {
     public Vector2Int(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+    
+        @Override
+    public boolean equals(Object o){
+        Vector2Int v = (Vector2Int) o;
+        return this.x == v.x && this.y == v.y;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 47 * hash + this.x;
+        hash = 47 * hash + this.y;
+        return hash;
+    }
+    
+    @Override
+    public String toString(){
+        return "x : "+x+"  y : "+y;
+    }
+    
+    public double distancia(Vector2Int v){
+        return Math.sqrt(Math.pow(x-v.x, 2) + Math.pow(y-v.y, 2));
     }
 }
