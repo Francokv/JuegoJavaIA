@@ -26,7 +26,7 @@ public class Jugador extends GameObject {
     
     boolean enMovimiento;
     int fpsCount;
-    float velocidad = 7f; // se mide en celdas por segundo
+    float velocidad = 3f; // se mide en celdas por segundo
     int velAnimacion = 12;
     int animCount;
 

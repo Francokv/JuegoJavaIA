@@ -27,7 +27,7 @@ public class Adversario extends GameObject {
 
     boolean enMovimiento;
     int fpsCount;
-    float velocidad = 5f; // se mide en celdas por segundo
+    float velocidad = 2.5f; // se mide en celdas por segundo
     int velAnimacion = 12;
     int animCount;
 
