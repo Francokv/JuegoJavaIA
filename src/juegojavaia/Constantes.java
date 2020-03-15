@@ -5,6 +5,7 @@
  */
 package juegojavaia;
 
+import java.awt.Toolkit;
 import utilidades.Vector2Int;
 
 /**
@@ -17,9 +18,9 @@ public interface Constantes {
 
     final int BORDE = 20;
     final float FRAME_TIME = (float)1/FPS;
-    public final int ANCHO_PANTALLA=1920; //1920
-    public final int LARGO_PANTALLA=1080; //1080
+    public final int ANCHO_PANTALLA=Toolkit.getDefaultToolkit().getScreenSize().width; //1920
+    public final int LARGO_PANTALLA=Toolkit.getDefaultToolkit().getScreenSize().height; //1080
  
-    public final int CANTIDAD_CELDAS_X=(ANCHO_PANTALLA -200 )/PIXEL_CELDA;
+    public final int CANTIDAD_CELDAS_X=(ANCHO_PANTALLA )/PIXEL_CELDA;
     public final int CANTIDAD_CELDAS_Y=(LARGO_PANTALLA-64)/PIXEL_CELDA;
 }

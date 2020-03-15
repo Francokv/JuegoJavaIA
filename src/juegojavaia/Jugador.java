@@ -22,6 +22,8 @@ import utilidades.Vector2Int;
  */
 public class Jugador extends GameObject {
 
+    public static Jugador jugador;
+    
     boolean enMovimiento;
     int fpsCount;
     float velocidad = 7f; // se mide en celdas por segundo
@@ -39,6 +41,7 @@ public class Jugador extends GameObject {
 
     @Override
     protected void init() {
+        jugador = this;
         nombre = "Jugador 1";
         tag = "jugador";
         sprites = CargaImagenes.jugador;
@@ -51,6 +54,11 @@ public class Jugador extends GameObject {
 
     @Override
     protected void update() {
+        if (Lienzo.vidas == 0) {
+                JOptionPane.showMessageDialog(null, "Haz perdido, lograste obtener " + Lienzo.recompensas + " de " + Lienzo.recompensasTotales + " recompensas");
+                System.exit(0);
+        }
+        
         if (enMovimiento) {
             animacion();
         } else {
@@ -221,10 +229,6 @@ public class Jugador extends GameObject {
     public void damage(int val) {
         if (!invulnerable) {
             Lienzo.vidas -= val;
-            if (Lienzo.vidas == 0) {
-                JOptionPane.showMessageDialog(null, "Haz perdido, lograste obtener " + Lienzo.recompensas + " de " + Lienzo.recompensasTotales + " recompensas");
-                System.exit(0);
-            }
         }
         invulnerable = true;
     }

@@ -6,6 +6,7 @@
 package juegojavaia;
 
 import javax.swing.JFrame;
+import utilidades.CargaImagenes;
 
 /**
  *
@@ -17,6 +18,7 @@ public class JuegoJavaIA {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        CargaImagenes.cargarImagenes();
         VentanaPrincipal vp=new VentanaPrincipal();
         vp.setVisible(true);
         vp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 

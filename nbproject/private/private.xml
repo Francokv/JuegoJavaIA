@@ -2,20 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/elnik/Documents/JuegoJavaIA/src/IA/Estado.java</file>
-            <file>file:/C:/Users/elnik/Documents/JuegoJavaIA/src/juegojavaia/Recompensa.java</file>
-            <file>file:/C:/Users/elnik/Documents/JuegoJavaIA/src/juegojavaia/Terreno.java</file>
-            <file>file:/C:/Users/elnik/Documents/JuegoJavaIA/src/juegojavaia/GameObject.java</file>
-            <file>file:/C:/Users/elnik/Documents/JuegoJavaIA/src/utilidades/Vector2Int.java</file>
-            <file>file:/C:/Users/elnik/Documents/JuegoJavaIA/src/juegojavaia/Constantes.java</file>
-            <file>file:/C:/Users/elnik/Documents/JuegoJavaIA/src/juegojavaia/Obstaculo.java</file>
-            <file>file:/C:/Users/elnik/Documents/JuegoJavaIA/src/juegojavaia/Escenario.java</file>
-            <file>file:/C:/Users/elnik/Documents/JuegoJavaIA/src/utilidades/CargaImagenes.java</file>
-            <file>file:/C:/Users/elnik/Documents/JuegoJavaIA/src/juegojavaia/Adversario.java</file>
-            <file>file:/C:/Users/elnik/Documents/JuegoJavaIA/src/juegojavaia/Jugador.java</file>
-            <file>file:/C:/Users/elnik/Documents/JuegoJavaIA/src/IA/BusquedaAnchura.java</file>
-            <file>file:/C:/Users/elnik/Documents/JuegoJavaIA/src/juegojavaia/VentanaPrincipal.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

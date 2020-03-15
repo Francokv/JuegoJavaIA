@@ -5,6 +5,8 @@
  */
 package juegojavaia;
 
+import IA.BusquedaAnchura;
+import IA.Estado;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import static juegojavaia.Constantes.FPS;
 import static juegojavaia.Constantes.FRAME_TIME;
 import utilidades.CargaImagenes;
 import utilidades.Input;
+import utilidades.Vector2Int;
 
 /**
  *
@@ -24,7 +27,7 @@ public class Adversario extends GameObject {
 
     boolean enMovimiento;
     int fpsCount;
-    float velocidad = 4f; // se mide en celdas por segundo
+    float velocidad = 5f; // se mide en celdas por segundo
     int velAnimacion = 12;
     int animCount;
 
@@ -32,6 +35,8 @@ public class Adversario extends GameObject {
     float t_totalInv = 0;
 
     Image[] animacionActual;
+
+    public ArrayList<Estado> pasos = new ArrayList<Estado>();
 
     @Override
     protected void init() {
@@ -44,10 +49,11 @@ public class Adversario extends GameObject {
 
     @Override
     protected void update() {
+
         if (enMovimiento) {
             animacion();
         } else {
-            mover();
+            moverIA();
         }
         if (!enMovimiento) {
             spriteActual = animacionActual[1];
@@ -91,6 +97,56 @@ public class Adversario extends GameObject {
             }
         }
 
+    }
+
+    private void moverIA() {
+        Vector2Int p = new Vector2Int();
+        Celda destino;
+
+        pasos = BusquedaAnchura.getRuta(celda.cooredenadas, Jugador.jugador.celda.cooredenadas);
+        if (pasos != null && !pasos.isEmpty()) {
+            pasos.remove(pasos.size() - 1);
+        }
+
+        if (pasos != null && !pasos.isEmpty()) {
+            p = pasos.get(pasos.size() - 1).posicion;
+            pasos.remove(pasos.size() - 1);
+
+            int horizontal = p.x - celda.cooredenadas.x;
+            int vertical = celda.cooredenadas.y - p.y;
+
+            if (horizontal != 0) {
+                destino = escenario.getCelda(celda.cooredenadas.x + horizontal, celda.cooredenadas.y);
+                if (destino != null && destino.estaLibre()) {
+                    moverA(destino.cooredenadas);
+                    posicion.x = -horizontal;
+                    enMovimiento = true;
+                    //settear animacion
+                    if (posicion.x < 0) {
+                        setAnimacion(Arrays.copyOfRange(sprites, 6, 9));
+                    } else {
+                        setAnimacion(Arrays.copyOfRange(sprites, 3, 6));
+                    }
+
+                    //Lienzo.vidas--;
+                }
+
+            } else if (vertical != 0) {
+                destino = escenario.getCelda(celda.cooredenadas.x, celda.cooredenadas.y - vertical);
+                if (destino != null && destino.estaLibre()) {
+                    moverA(destino.cooredenadas);
+                    posicion.y = -vertical;
+                    enMovimiento = true;
+
+                    if (posicion.y < 0) {
+                        setAnimacion(Arrays.copyOfRange(sprites, 9, 12));
+                    } else {
+                        setAnimacion(Arrays.copyOfRange(sprites, 0, 3));
+                    }
+                    //Lienzo.vidas--;
+                }
+            }
+        }
     }
 
     private void animacion() {

@@ -25,7 +25,7 @@ public class Lienzo extends Canvas implements Constantes {
     private Image imagenBuffer;
 
     
-    public static int vidas = 3;
+    public static int vidas = 5;
     public static int recompensas = 0;
     public static int recompensasTotales = 4;
 

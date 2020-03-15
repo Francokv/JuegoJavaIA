@@ -21,7 +21,6 @@ public class VentanaPrincipal extends JFrame implements Constantes {
 
     //constructor
     public VentanaPrincipal() {
-        CargaImagenes.cargarImagenes();
         
         lienzo = Lienzo.getLienzo();
         
